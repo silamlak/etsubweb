@@ -1,74 +1,55 @@
-import React from 'react'
-import {createBrowserRouter, RouterProvider} from 'react-router-dom' 
-import ProtectedRoute from './routeCheck/ProtectedRoute'
-import PublicRoute from './routeCheck/PublicRoute'
-import Home from './pages/dashboard/Home';
-import Layout from './routeCheck/Layout';
-import Signin from './pages/auth/Signin';
-import Signup from './pages/auth/Signup';
-import NotFound from './pages/notFound/NotFound';
-import ConfirmationPage from './pages/auth/ConfirmationPage';
-import ResetPasswordPage from './pages/auth/ResetPasswordPage';
-import ForgotPasswordPage from './pages/auth/ForgotPasswordPage';
-import Order from './pages/orders/Order';
-import SingleOrder from './pages/singleorder/SingleOrder';
-import Catagories from './pages/catagories/Catagories';
-import SingleCatagorie from './pages/singleCatagorie/SingleCatagorie';
-import SingleProduct from './pages/product/SingleProduct';
-import Product from './pages/product/Product';
-import CreateProduct from './pages/product/CreateProduct';
-import Customer from './pages/customer/Customer';
-import SingleCustomer from './pages/customer/SingleCustomer';
+import React from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
+import ProtectedRoute from "./routeCheck/ProtectedRoute";
+import PublicRoute from "./routeCheck/PublicRoute";
+import Home from "./pages/dashboard/Home";
+import Layout from "./routeCheck/Layout";
+import Signin from "./pages/auth/Signin";
+import Signup from "./pages/auth/Signup";
+import NotFound from "./pages/notFound/NotFound";
+import ConfirmationPage from "./pages/auth/ConfirmationPage";
+import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
+import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
+
+import Product from "./pages/product/Product";
+import SingleProduct from "./pages/product/SingleProduct";
+import Payment from "./pages/payment/Payment";
+import Order from "./pages/orders/Order";
 
 const App = () => {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: (
-        // <ProtectedRoute>
-          <Layout />
-        // </ProtectedRoute>
-      ),
+      element: <Layout />,
       children: [
         {
           path: "/",
           element: <Home />,
         },
         {
-          path: "/orders",
-          element: <Order />,
-        },
-        {
-          path: "/order/:id",
-          element: <SingleOrder />,
-        },
-        {
-          path: "/categorie",
-          element: <Catagories />,
-        },
-        {
-          path: "/categorie/:id",
-          element: <SingleCatagorie />,
-        },
-        {
           path: "/product",
           element: <Product />,
         },
         {
-          path: "/product/create",
-          element: <CreateProduct />,
-        },
-        {
-          path: "/product/:id",
+          path: "/product/:productName",
           element: <SingleProduct />,
         },
         {
-          path: "/customer",
-          element: <Customer />,
+          path: "/payment",
+          element: (
+            <ProtectedRoute>
+              <Payment />
+            </ProtectedRoute>
+          ),
         },
         {
-          path: "/customer/:id",
-          element: <SingleCustomer />,
+          path: "/order",
+          element: (
+            <ProtectedRoute>
+              <Order />
+            </ProtectedRoute>
+          ),
         },
       ],
     },
@@ -105,7 +86,7 @@ const App = () => {
       ),
     },
     {
-      path: "/confirmation",
+      path: "/otp",
       element: (
         <PublicRoute>
           <ConfirmationPage />
@@ -118,8 +99,12 @@ const App = () => {
     },
   ]);
   return (
-    <RouterProvider router={router} />
-  )
-}
+    <div>
+      <HelmetProvider>
+        <RouterProvider router={router} />
+      </HelmetProvider>
+    </div>
+  );
+};
 
-export default App
+export default App;

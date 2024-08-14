@@ -4,20 +4,20 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 
 import authSlice from "../features/auth/authSlice";
 import themeSlice from './themeSlice'
-import orderSlice from '../features/order/orderSlice'
-import customerSlice from '../features/customer/customerSlice'
+// import orderSlice from '../features/order/orderSlice'
+// import customerSlice from '../features/customer/customerSlice'
 
 // Define the persist configuration
 const persistConfig = {
-  key: "root_ecom",
+  key: "u",
   storage,
 };
 
 const rootReducer = combineReducers({
   auth: authSlice,
   theme: themeSlice,
-  order: orderSlice,
-  customer: customerSlice,
+  // order: orderSlice,
+  // customer: customerSlice,
 });
 
 // Create a persisted reducer

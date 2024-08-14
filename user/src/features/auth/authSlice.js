@@ -8,23 +8,26 @@ const initialState = {
 }
 
 export const authSlice = createSlice({
-    name: 'authecom',
+    name: 'uauth',
     initialState,
     reducers: {
         login: (state, action) => {
-            state.user = action.payload
             state.token = action.payload;
+        },
+        loginUser: (state, action) => {
+            state.user = action.payload
         },
         logout: (state) => {
             state.user = null
+            state.token = null
         }
     }
 })
 
-export const {login, logout} = authSlice.actions
+export const { login, logout, loginUser } = authSlice.actions;
 
 const persistConfig = {
-  key: "ecoma",
+  key: "ua",
   storage,
 };
 

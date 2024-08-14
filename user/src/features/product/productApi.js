@@ -4,7 +4,7 @@ import { handleError } from "../../api/handleError";
 
 export const getSingleProductFun = async (id) => {
   try {
-    const res = await axiosInstance.get(`${endpoints.get_product}/${id}`, {
+    const res = await axios.get(`${endpoints.get_product}/${id}`, {
       withCredentials: true, // Make sure cookies are sent with the request
     });
     return res.data;
@@ -20,7 +20,7 @@ export const getProductFun = async ({
   selectedCategory,
 }) => {
   try {
-    const res = await axiosInstance.get(
+    const res = await axios.get(
       `${endpoints.get_product}`,
       {
         params: {
@@ -41,11 +41,16 @@ export const getProductFun = async ({
   }
 };
 
-export const postProductCreateFun = async (data) => {
+export const getProductSearchFun = async ({ searchTerm }) => {
   try {
-    const res = await axiosInstance.post(
-      `${endpoints.create_product}`,
-      data,
+    console.log(searchTerm);
+    const res = await axios.get(
+      `${endpoints.get_product_search}`,
+      {
+        params: {
+          query: searchTerm,
+        },
+      },
 
       {
         withCredentials: true, // Make sure cookies are sent with the request
@@ -57,26 +62,9 @@ export const postProductCreateFun = async (data) => {
   }
 };
 
-export const putProductFun = async ({id, product}) => {
+export const getCategoryFun = async (id) => {
   try {
-    console.log( id, product);
-    const res = await axiosInstance.put(
-      `${endpoints.update_product}/${id}`,
-      product,
-
-      {
-        withCredentials: true,
-      }
-    );
-    return res.data;
-  } catch (error) {
-    return handleError(error);
-  }
-};
-
-export const getCategoryForProductCreationFun = async () => {
-  try {
-    const res = await axiosInstance.get(`${endpoints.get_catagories}`, {
+    const res = await axios.get(`${endpoints.get_category}`, {
       withCredentials: true, // Make sure cookies are sent with the request
     });
     return res.data;

@@ -6,6 +6,10 @@ const purchaseSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    paymentId: {
+      type: String,
+      required: true,
+    },
     serviceId: {
       type: String,
       required: true,
@@ -13,6 +17,18 @@ const purchaseSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
+    },
+    name: {
+      type: String
+    },
+    description: {
+      type: String
+    },
+    size1: {
+      type: String
+    },
+    size2: {
+      type: String
     },
     quantity: {
       type: Number,
@@ -42,7 +58,7 @@ const purchaseSchema = new mongoose.Schema(
     },
     paymentMethod: {
       type: String,
-      enum: ["TeleBirr", "Abysinia", "Bank Transfer"],
+      // enum: ["TeleBirr", "Abysinia", "Bank Transfer"],
       required: true,
     },
     paymentStatus: {

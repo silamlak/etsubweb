@@ -1,17 +1,19 @@
 import React from 'react'
 import Navbar from '../components/navbar/Navbar'
 import { Outlet } from 'react-router-dom'
-import Sidebar from '../components/sidebar/Sidebar';
+import Topbar from '../components/navbar/Topbar';
+import Footer from '../components/footer/Footer';
+import ScrollToTop from '../components/ScrollToTop'
 
 const Layout = () => {
   return (
-    <div className="min-h-screen w-full bg-slate-100 dark:bg-slate-950">
-      <div className="flex">
-        <div className='sticky top-0 h-full'><Sidebar /></div>
-        <div className="flex-1">
+    <div className="min-h-screen w-full bg-slate-50 dark:bg-slate-950">
+        <div className="w-full">
+          <ScrollToTop />
+          <Topbar />
           <Navbar />
-          <div className='p-3 max-w-[1600px] mx-auto'><Outlet /></div>
-        </div>
+          <div className='mx-auto min-h-screen'><Outlet /></div>
+          <Footer />
       </div>
     </div>
   );

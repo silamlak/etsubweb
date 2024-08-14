@@ -47,7 +47,7 @@ axiosInstance.interceptors.response.use(
         ] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        // store.dispatch(logout());
+        store.dispatch(logout());
         console.error("Refresh token failed", refreshError);
       }
     }
@@ -66,27 +66,19 @@ export const endpoints = {
   reset_password: `${api}/auth/reset`,
 
   //service or prioduct
-  update_product: `/admin/service/edit`,
-  get_product: `/admin/service/get`,
-  create_product: `/admin/service/add`,
+  get_product: `${api}/user/service`,
+  get_category: `${api}/user/category/get`,
+  get_product_search: `${api}/user/search/service`,
 
   //orders
-  get_orders: `/admin/order/get`,
-  delete_orders: `/admin/order/delete`,
+  get_orders: `/user/order/get`,
 
-  //category
-  get_catagories: `/admin/catagorie/get`,
-  post_category: `/admin/catagorie/add`,
+  // user
+  post_purchase: `/user/purchase`,
 
-  //dashboard
-  get_each_total: `/admin/dashboard/total/get`,
-  get_category_destribution: `/admin/dashboard/catagory`,
-  get_top_user: `/admin/dashboard/top/users`,
-  get_pending_orders: `/admin/dashboard/pendings`,
-  get_sales_revenue: `/admin/dashboard/sales`,
+  //home
+  get_features: `/user/product/new`,
 
-  //customers
-  get_customers: `/admin/customers/all`,
-  delete_customers: `/admin/customer/delete`,
-  get_customer: `/admin/customer/get`,
+  //page check
+  page_check: `/user/page/check`,
 };

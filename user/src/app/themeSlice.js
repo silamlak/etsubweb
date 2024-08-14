@@ -19,7 +19,7 @@ export const themeSlice = createSlice({
 export const { changeTheme } = themeSlice.actions;
 
 const persistConfig = {
-  key: "t",
+  key: "ut",
   storage,
 };
 

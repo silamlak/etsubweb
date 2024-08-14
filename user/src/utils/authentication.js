@@ -46,5 +46,9 @@ export const signupSchema = yup
         "Password must contain at least one special character"
       )
       .required("Password is required"),
+    agree: yup
+      .boolean()
+      .oneOf([true], "You must agree to the terms and conditions")
+      .required("You must agree to the terms and conditions"),
   })
   .required();
