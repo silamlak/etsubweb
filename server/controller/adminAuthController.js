@@ -1,7 +1,6 @@
 import adminUserModel from "../models/adminModel.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
 
 export const admincreateUser = async (req, res, next) => {
   const { email, password } = req.body;
@@ -11,10 +10,15 @@ export const admincreateUser = async (req, res, next) => {
     if (user) {
       return res.status(400).json({ msg: "User already exists" });
     }
-    user = new adminUserModel({email, password });
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
+
+    user = new adminUserModel({ email, password });
+
+    // Generate salt and hash the password using bcryptjs
+    const salt = bcrypt.genSaltSync(10); // Use bcryptjs' synchronous method
+    user.password = bcrypt.hashSync(password, salt); // Use bcryptjs' synchronous method
+
     await user.save();
+
     res.status(201).json(user);
   } catch (error) {
     console.error(error.message);
@@ -30,10 +34,13 @@ export const adminsignIn = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
-    const isMatch = await bcrypt.compare(password, user.password);
+
+    // Use bcryptjs to compare the password
+    const isMatch = bcrypt.compareSync(password, user.password); // Use bcryptjs' synchronous method
     if (!isMatch) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
+
     const payload = {
       user: {
         id: user._id,
@@ -41,6 +48,7 @@ export const adminsignIn = async (req, res, next) => {
       },
     };
 
+    // Generate the JWT tokens
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
       expiresIn: "10m",
     });
@@ -49,6 +57,7 @@ export const adminsignIn = async (req, res, next) => {
       expiresIn: "1d",
     });
 
+    // Set the refresh token as a cookie
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Set to `true` in production
@@ -56,6 +65,7 @@ export const adminsignIn = async (req, res, next) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
+    // Respond with the access token
     res.status(200).json({ token });
   } catch (error) {
     console.error(error.message);

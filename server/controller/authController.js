@@ -1,6 +1,6 @@
 import { body, validationResult } from "express-validator";
 import User from "../models/userModel.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { sendConfirmationEmail } from "../emailController.js";
 import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
@@ -46,12 +46,12 @@ export const createUser = async (req, res, next) => {
 
     user = new User({ first_name, father_name, ethPhone, email, password });
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
+    const salt = bcrypt.genSaltSync(10); // Use bcryptjs' genSaltSync
+    user.password = bcrypt.hashSync(password, salt); // Use bcryptjs' hashSync
 
     await user.save();
 
-    await createOtp(email, 'Confirmation Code');
+    await createOtp(email, "Confirmation Code");
 
     res.status(201).json(user);
   } catch (error) {
@@ -148,11 +148,12 @@ export const signIn = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
+
     if (user.confirmed === false) {
-      return res.status(400).json({ msg: "consfirmation needed" });
+      return res.status(400).json({ msg: "Confirmation needed" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = bcrypt.compareSync(password, user.password); // Use bcryptjs' compareSync
     if (!isMatch) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
@@ -171,17 +172,15 @@ export const signIn = async (req, res, next) => {
       expiresIn: "10m",
     });
 
-        const refreshToken = jwt.sign(
-          payload,
-          process.env.REFRESH_TOKEN_SECRET,
-          { expiresIn: "7d" }
-        );
+    const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+      expiresIn: "7d",
+    });
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Set to `true` in production
-      sameSite: "Strict", // Optional, adds additional security
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     res.status(200).json({ token });
@@ -321,13 +320,14 @@ export const resetPassword = async (req, res, next) => {
       resetToken,
       resetTokenExpires: { $gt: Date.now() },
     });
+
     if (!user) {
       return res.status(400).json({ msg: "Invalid or expired reset token" });
     }
 
     // Hash the new password and save it
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
+    const salt = bcrypt.genSaltSync(10); // Use bcryptjs' genSaltSync method
+    user.password = bcrypt.hashSync(password, salt); // Use bcryptjs' hashSync method
 
     // Clear reset token and expiration
     user.resetToken = undefined;
