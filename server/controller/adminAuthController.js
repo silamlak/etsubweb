@@ -61,7 +61,7 @@ export const adminsignIn = async (req, res, next) => {
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Set to `true` in production
-      sameSite: "Strict", // Optional, adds additional security
+      sameSite: "none", // Optional, adds additional security
       maxAge: 60 * 60 * 1000,
     });
 
