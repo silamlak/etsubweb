@@ -13,7 +13,7 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const state = store.getState();
     const token = state.auth.token;
-    // console.log(token)
+    console.log(token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -35,7 +35,8 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/auth/refresh",{},
+          `${api}/auth/refresh`,
+          {},
           {
             withCredentials: true,
           }
