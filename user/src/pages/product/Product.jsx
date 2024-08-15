@@ -5,7 +5,11 @@ import {
   FaChevronRight,
   FaTimes,
   FaRegWindowClose,
+  FaTiktok,
+  FaInstagramSquare,
+  FaFacebook,
 } from "react-icons/fa";
+
 import { useNavigate, useLocation } from "react-router-dom";
 import { getCategoryFun, getProductFun } from "../../features/product/productApi";
 import { TbCategory } from "react-icons/tb";
