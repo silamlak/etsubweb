@@ -5,9 +5,6 @@ import {
   FaChevronRight,
   FaTimes,
   FaRegWindowClose,
-  FaTiktok,
-  FaInstagramSquare,
-  FaFacebook,
 } from "react-icons/fa";
 
 import { useNavigate, useLocation } from "react-router-dom";
@@ -246,17 +243,6 @@ const Product = () => {
                     <p className="text-lg text-center text-semibold">
                       {image.name}
                     </p>
-                  </div>
-                  <div className="flex items-center gap-2 p-2 bg-slate-100 dark:bg-slate-700">
-                    <div>
-                      <FaFacebook className="" />
-                    </div>
-                    <div>
-                      <FaInstagramSquare className="" />
-                    </div>
-                    <div>
-                      <FaTiktok className="" />
-                    </div>
                   </div>
                 </div>
               ))}
