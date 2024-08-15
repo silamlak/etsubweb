@@ -60,7 +60,7 @@ const columns = [
     cell: (row) => <span className="text-green-500">{row?.total_price || 0} ETB</span>, // Displaying total price with `$`
   },
   {
-    name: "Payment Method",
+    name: "Date",
     selector: (row) => row?.createdAt,
     sortable: true,
     hide: "sm",
@@ -68,11 +68,6 @@ const columns = [
       <span className="">{new Date(row?.createdAt).toLocaleDateString()}</span>
     ),
   },
-  //   {
-  //     name: "Purchase Date", // Added to show purchase date
-  //     selector: (row) => row?.purchaseDate.split("T")[0], // Formatting date to `YYYY-MM-DD`
-  //     sortable: true,
-  //   },
 ];
 
 const Customer = () => {
@@ -171,16 +166,16 @@ const Customer = () => {
 
   const handleDateChange = (e) => {
     setDateValue(e.target.value);
-    setCurrentPage(1); // Reset to first page when date changes
+    setCurrentPage(1);
   };
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-    setCurrentPage(1); // Reset to first page when search query changes
+    setCurrentPage(1); 
   };
 
     const handleFilterTypeChange = (e) => {
       setFilterType(e.target.value);
-      setCustomValue(""); // Clear custom value when filter type changes
+      setCustomValue(""); 
       setDateValue("");
     };
 
@@ -221,7 +216,7 @@ const Customer = () => {
     };
 
   return (
-    <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl shadow-md">
+    <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl overflow-x-auto shadow-md">
       <div className="flex flex-row-reverse gap-4 justify-between">
         <div className="mb-4 flex items-center space-x-2">
           {isLoading && !isError && (

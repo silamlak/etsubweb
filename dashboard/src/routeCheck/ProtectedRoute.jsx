@@ -5,11 +5,11 @@ import {useNavigate} from 'react-router-dom'
 const ProtectedRoute = ({children}) => {
     const isAuth = useSelector((state) => state.auth.user)
     const navigate = useNavigate()
-  // useEffect(() => {
-  //   if (!isAuth) {
-  //     navigate("/sign-in", { replace: true });
-  //   }
-  // }, [isAuth, navigate]);
+  useEffect(() => {
+    if (!isAuth) {
+      navigate("/sign-in", { replace: true });
+    }
+  }, [isAuth, navigate]);
 
   return children
 }

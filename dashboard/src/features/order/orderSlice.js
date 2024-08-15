@@ -7,7 +7,8 @@ const initialState = {
   max_index: null,
   min_index: 1,
   currentDataId: null,
-  currentIndex: null
+  currentIndex: null,
+  dataDetail: null
 };
 
 export const orderSlice = createSlice({
@@ -17,6 +18,16 @@ export const orderSlice = createSlice({
     addOrder: (state, action) => {
       state.orderData = action.payload;
       state.max_index = action.payload.length;
+    },
+    addDetail: (state, action) => {
+      state.dataDetail = action.payload;
+    },
+    updateDetailStatus: (state, action) => {
+      console.log(action.payload)
+      state.dataDetail.service = {
+        ...state.dataDetail.service,
+        status:action.payload
+      };
     },
 
     addOrderDetail: (state, action) => {
@@ -58,6 +69,8 @@ export const {
   prevOrderDetail,
   nextOrderDetail,
   deleteFiles,
+  addDetail,
+  updateDetailStatus,
 } = orderSlice.actions;
 
 const persistConfig = {

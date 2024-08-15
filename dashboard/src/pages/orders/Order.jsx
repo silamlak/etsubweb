@@ -42,7 +42,7 @@ const customStyles = {
 
 const columns = [
   {
-    name: "Service ID", // Updated to match the `serviceId`
+    name: "UserName", 
     selector: (row) => `${row?.user?.first_name} ${row?.user?.father_name}`,
     sortable: true,
   },
@@ -53,25 +53,20 @@ const columns = [
     hide: "md",
   },
   {
-    name: "Total Price", // Updated to display total price
+    name: "Total Price", 
     selector: (row) => row?.totalPrice,
     sortable: true,
-    cell: (row) => <span className="text-green-500">${row.totalPrice}</span>, // Displaying total price with `$`
+    cell: (row) => <span className="text-green-500">${row.totalPrice}</span>, 
   },
   {
-    name: "Payment Method",
-    selector: (row) => row?.category,
+    name: "Product",
+    selector: (row) => row?.name,
     sortable: true,
     hide: "sm",
   },
-  // {
-  //   name: "Status", // Updated to match the `status`
-  //   selector: (row) => row?.status,
-  //   sortable: true,
-  // },
   {
-    name: "Purchase Date", // Added to show purchase date
-    selector: (row) => row?.purchaseDate.split("T")[0], // Formatting date to `YYYY-MM-DD`
+    name: "Purchase Date", 
+    selector: (row) => row?.purchaseDate.split("T")[0], 
     sortable: true,
   },
 ];
@@ -102,6 +97,30 @@ const Order = () => {
   const [filterType, setFilterType] = useState("");
   const [customValue, setCustomValue] = useState("");
   const [toDelete, setToDelete] = useState([]);
+
+
+    const { data, isLoading, isError } = useQuery({
+    queryKey: [
+      "orders",
+      currentPage,
+      limit,
+      searchQuery,
+      selectedCategory,
+      dateValue,
+      price,
+    ],
+    queryFn: () =>
+      getOrderFun({
+        limit,
+        currentPage,
+        searchQuery,
+        selectedCategory,
+        dateValue,
+        price,
+      }),
+    // enabled: !!filterType,
+    keepPreviousData: true,
+  });
 
   useEffect(() => {
     const queryParams = new URLSearchParams();
@@ -139,49 +158,25 @@ const Order = () => {
     setPrice(priceFromURL);
   }, [location.search]);
 
-  const { data, isLoading, isError } = useQuery({
-    queryKey: [
-      "orders",
-      currentPage,
-      limit,
-      searchQuery,
-      selectedCategory,
-      dateValue,
-      price,
-    ],
-    queryFn: () =>
-      getOrderFun({
-        limit,
-        currentPage,
-        searchQuery,
-        selectedCategory,
-        dateValue,
-        price,
-      }),
-    // enabled: !!filterType,
-    keepPreviousData: true,
-  });
-
   
   useEffect(() => {
     if (data) {
       dispatch(addOrder(data?.ordersWithUsers));
     }
   }, [data]);
-  console.log(data);
 
     const handleDateChange = (e) => {
       setDateValue(e.target.value);
-      setCurrentPage(1); // Reset to first page when date changes
+      setCurrentPage(1); 
     };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
-    setCurrentPage(1); // Reset to first page when category changes
+    setCurrentPage(1); 
   };
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-    setCurrentPage(1); // Reset to first page when search query changes
+    setCurrentPage(1);
   };
 
   const handleStatusChange = (status) => {
@@ -192,7 +187,7 @@ const Order = () => {
 
   const handleFilterTypeChange = (e) => {
     setFilterType(e.target.value);
-    setCustomValue(""); // Clear custom value when filter type changes
+    setCustomValue("");
     setDateValue("");
   };
 
@@ -242,8 +237,8 @@ const Order = () => {
   });
 
   return (
-    <div className="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl shadow-md">
-      <div className="flex flex-row-reverse gap-4 justify-between">
+    <div className="p-4 min-w-[600px] w-full  overflow-x-hidden bg-slate-50 dark:bg-slate-900 rounded-xl shadow-md">
+      <div className="flex flex-row-reverse overflow-x-auto gap-4 justify-between">
         <div className="mb-4 flex items-center space-x-2">
           {isLoading && !isError && (
             <div>
@@ -291,7 +286,7 @@ const Order = () => {
           placeholder="Search..."
           value={searchQuery}
           onChange={(e) => handleSearchChange(e)}
-          className="mb-4 p-2 rounded w-fit focus:outline dark:outline-orange-400 outline-blue-500 text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-700"
+          className="mb-4 p-2 rounded w-fit focus:outline-none dark:outline-orange-400 outline-blue-500 text-slate-800 dark:text-slate-100 bg-slate-100 dark:bg-slate-700"
         />
       </div>
       {toDelete?.length !== 0 && (
@@ -337,7 +332,6 @@ const Order = () => {
           Canceled({data?.statusCounts?.Canceled})
         </button>
       </div>
-
       <DataTable
         columns={columns}
         data={filteredItems}

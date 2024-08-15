@@ -26,7 +26,7 @@ const Sidebar = ({ theme }) => {
   const [open, setOpen] = useState(true);
 
   return (
-    <div className=" z-50">
+    <div className="flex max-lg:hidden z-50">
       <div
         className={`min-h-screen z-50 ${
           open ? "w-56" : "w-[67px]"
@@ -42,7 +42,6 @@ const Sidebar = ({ theme }) => {
         <div className="mt-4 flex flex-col gap-4 z-50 relative">
           {menus.map((menu, i) => {
             const isActive = location.pathname === menu.link;
-
             return (
               <Link
                 to={menu.link}

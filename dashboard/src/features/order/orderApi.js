@@ -8,7 +8,7 @@ export const getOrderFun = async ({
   searchQuery,
   selectedCategory,
   dateValue,
-  price
+  price,
 }) => {
   try {
     const res = await axiosInstance.get(
@@ -59,3 +59,18 @@ export const getDeleteOrdersFun = async (ids) => {
   }
 };
 
+export const postUpdateStatusFun = async ({ id, status }) => {
+  try {
+    console.log(id, status);
+    const res = await axiosInstance.post(
+      `${endpoints.update_orders}/${id}`,
+      { status },
+      {
+        withCredentials: true,
+      }
+    );
+    return res.data;
+  } catch (error) {
+    return handleError(error);
+  }
+};

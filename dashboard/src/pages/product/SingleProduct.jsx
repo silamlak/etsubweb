@@ -87,7 +87,6 @@ const SingleProduct = () => {
   });
 
   const handleSubmit = async () => {
-    // console.log(product);
     if (
       !product.name ||
       !product.desc ||
@@ -103,7 +102,10 @@ const SingleProduct = () => {
   const hasChanges =
     initialProduct.s_img !== product.s_img ||
     product.price !== initialProduct.price ||
-    product.details !== initialProduct.details;
+    product.discount !== initialProduct.discount ||
+    product.desc !== initialProduct.desc ||
+    product.name !== initialProduct.name ||
+    product.category !== initialProduct.category;
 
   const handleFileChange = async (e) => {
     try {

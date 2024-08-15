@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
-import { getProductFun } from "../../features/product/productApi";
+import { getCatagoriesFun, getProductFun } from "../../features/product/productApi";
 import { TbCategory } from "react-icons/tb";
 import { IoMdAdd } from "react-icons/io";
 import Loader from "../../components/Loader";
@@ -67,29 +67,33 @@ const Product = () => {
 
   const handleRowsPerPageChange = (event) => {
     setLimit(parseInt(event.target.value, 10));
-    setCurrentPage(1); // Reset to first page when limit changes
+    setCurrentPage(1); 
   };
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
-    setCurrentPage(1); // Reset to first page when search query changes
+    setCurrentPage(1); 
   };
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
-    setCurrentPage(1); // Reset to first page when category changes
+    setCurrentPage(1); 
     setDropdownOpen(false);
   };
 
   const handleCategoryRemove = () => {
     setSelectedCategory("");
-    setCurrentPage(1); // Reset to first page when category is removed
+    setCurrentPage(1); 
     setDropdownOpen(false);
   };
 
   if (isError) return <p>Error fetching images.</p>;
 
-  const categories = [
+  const { data: categories, isLoading: ci } = useQuery({
+    queryKey: ["category"],
+    queryFn: getCatagoriesFun,
+  });
+  const categorie = [
     "Business Cards",
     "Brochures",
     "Flyers",
@@ -143,19 +147,19 @@ const Product = () => {
               <p>Category</p>
             </div>
             <div className="flex flex-col gap-2 mt-1 text-md">
-              {categories.map((c) => (
+              {categories?.map((c) => (
                 <div key={c} className=" relative">
                   <p
-                    onClick={() => handleCategoryClick(c)}
+                    onClick={() => handleCategoryClick(c?.title)}
                     className={`px-4 py-1 font-semibold cursor-pointer text-sm whitespace-nowrap rounded pr-2 duration-150 hover:bg-slate-200 dark:hover:bg-slate-800 ${
-                      selectedCategory === c
+                      selectedCategory === c?.title
                         ? "bg-slate-200 dark:bg-slate-800"
                         : ""
                     }`}
                   >
-                    {c}
+                    {c?.title}
                   </p>
-                  {selectedCategory === c && (
+                  {selectedCategory === c?.title && (
                     <FaTimes
                       onClick={handleCategoryRemove}
                       className="text-red-500 absolute right-1  top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -184,16 +188,16 @@ const Product = () => {
                   {categories.map((c) => (
                     <div key={c} className="relative">
                       <p
-                        onClick={() => handleCategoryClick(c)}
+                        onClick={() => handleCategoryClick(c?.title)}
                         className={`px-4 py-1 font-semibold cursor-pointer text-sm whitespace-nowrap rounded pr-8 duration-150 hover:bg-slate-200 dark:hover:bg-slate-800 ${
-                          selectedCategory === c
+                          selectedCategory === c?.title
                             ? "bg-slate-200 dark:bg-slate-800"
                             : ""
                         }`}
                       >
-                        {c}
+                        {c?.title}
                       </p>
-                      {selectedCategory === c && (
+                      {selectedCategory === c?.title && (
                         <FaTimes
                           onClick={handleCategoryRemove}
                           className="text-red-500 absolute right-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
@@ -219,7 +223,7 @@ const Product = () => {
                 <img
                   src={image.s_img}
                   alt={image.desc}
-                  className={`w-fit text-slate-800 dark:text-slate-100 h-64 object-cover`}
+                  className={`w-full text-slate-800 dark:text-slate-100 h-64 object-cover`}
                 />
                 <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-60 p-2 text-white">
                   <p className="text-lg text-center text-semibold">

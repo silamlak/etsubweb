@@ -13,6 +13,17 @@ export const getSingleProductFun = async (id) => {
   }
 };
 
+export const getCatagoriesFun = async () => {
+  try {
+    const res = await axiosInstance.get(endpoints.get_catagories, {
+      withCredentials: true, 
+    });
+    return res.data;
+  } catch (error) {
+    return handleError(error);
+  }
+};
+
 export const getProductFun = async ({
   currentPage,
   limit,

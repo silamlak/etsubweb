@@ -9,7 +9,7 @@ import customerSlice from '../features/customer/customerSlice'
 
 // Define the persist configuration
 const persistConfig = {
-  key: "root_ecom",
+  key: "root_admin",
   storage,
 };
 

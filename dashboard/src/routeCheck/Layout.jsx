@@ -5,12 +5,12 @@ import Sidebar from '../components/sidebar/Sidebar';
 
 const Layout = () => {
   return (
-    <div className="min-h-screen w-full bg-slate-100 dark:bg-slate-950">
+    <div className="min-h-screen w-full overflow-x-auto bg-slate-100 dark:bg-slate-950">
       <div className="flex">
         <div className='sticky top-0 h-full'><Sidebar /></div>
         <div className="flex-1">
           <Navbar />
-          <div className='p-3 max-w-[1600px] mx-auto'><Outlet /></div>
+          <div className='p-3 max-w-[1600px] overflow-hidden w-full mx-auto'><Outlet /></div>
         </div>
       </div>
     </div>

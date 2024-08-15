@@ -5,6 +5,7 @@ const api = import.meta.env.VITE_API;
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8000/api",
+  // baseURL: "http://localhost:8000/api",
 });
 
 // Request interceptor to add auth token to headers
@@ -12,7 +13,6 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const state = store.getState();
     const token = state.auth.token;
-    // console.log(token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -34,12 +34,12 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/auth/refresh",{},
+          "http://localhost:8000/api/admin/auth/refresh",{},
           {
             withCredentials: true,
           }
         );
-        console.log(response.data);
+        // console.log(response.data);
         const newAccessToken = response.data;
         store.dispatch(login(newAccessToken));
         axiosInstance.defaults.headers.common[
@@ -47,7 +47,7 @@ axiosInstance.interceptors.response.use(
         ] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        // store.dispatch(logout());
+        store.dispatch(logout());
         console.error("Refresh token failed", refreshError);
       }
     }
@@ -59,8 +59,8 @@ export default axiosInstance;
 
 
 export const endpoints = {
-  signin: `${api}/auth/signin`,
-  signup: `${api}/auth/signup`,
+  signin: `${api}/admin/auth/signin`,
+  signup: `${api}/admin/auth/signup`,
   confirm: `${api}/auth/confirm-otp`,
   request_reset: `${api}/auth/request/reset`,
   reset_password: `${api}/auth/reset`,
@@ -73,6 +73,7 @@ export const endpoints = {
   //orders
   get_orders: `/admin/order/get`,
   delete_orders: `/admin/order/delete`,
+  update_orders: `/admin/order/update`,
 
   //category
   get_catagories: `/admin/catagorie/get`,

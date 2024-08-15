@@ -25,9 +25,9 @@ const App = () => {
     {
       path: "/",
       element: (
-        // <ProtectedRoute>
+        <ProtectedRoute>
           <Layout />
-        // </ProtectedRoute>
+         </ProtectedRoute>
       ),
       children: [
         {
@@ -88,30 +88,30 @@ const App = () => {
         </PublicRoute>
       ),
     },
-    {
-      path: "/reset/password",
-      element: (
-        <PublicRoute>
-          <ResetPasswordPage />
-        </PublicRoute>
-      ),
-    },
-    {
-      path: "/request/reset",
-      element: (
-        <PublicRoute>
-          <ForgotPasswordPage />
-        </PublicRoute>
-      ),
-    },
-    {
-      path: "/confirmation",
-      element: (
-        <PublicRoute>
-          <ConfirmationPage />
-        </PublicRoute>
-      ),
-    },
+    // {
+    //   path: "/reset/password",
+    //   element: (
+    //     <PublicRoute>
+    //       <ResetPasswordPage />
+    //     </PublicRoute>
+    //   ),
+    // },
+    // {
+    //   path: "/request/reset",
+    //   element: (
+    //     <PublicRoute>
+    //       <ForgotPasswordPage />
+    //     </PublicRoute>
+    //   ),
+    // },
+    // {
+    //   path: "/confirmation",
+    //   element: (
+    //     <PublicRoute>
+    //       <ConfirmationPage />
+    //     </PublicRoute>
+    //   ),
+    // },
     {
       path: "*",
       element: <NotFound />,

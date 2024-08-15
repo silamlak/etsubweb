@@ -2,6 +2,7 @@ import offerModel from "../models/offerModel.js";
 import serviceModel from "../models/serviceModel.js";
 import purchasedModel from "../models/purchaseModel.js";
 import catagorieModel from "../models/catagorieModel.js";
+import paymentModel from "../models/paymentModel.js";
 import { validationResult } from "express-validator";
 import mongoSanitize from "mongo-sanitize";
 import userModel from "../models/userModel.js";
@@ -51,7 +52,11 @@ export const getService = async (req, res, next) => {
       query.category = category;
     }
 
-    const services = await serviceModel.find(query).skip(skip).limit(limit).sort({createdAt: -1})
+    const services = await serviceModel
+      .find(query)
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
 
     const totalCount = await serviceModel.countDocuments(query);
 
@@ -236,7 +241,7 @@ export const ViewOffer = async (req, res, next) => {
 // catagories
 export const getCatagorie = async (req, res, next) => {
   try {
-    const catagorie = await catagorieModel.find().sort({createdAt: -1})
+    const catagorie = await catagorieModel.find().sort({ createdAt: -1 });
     if (!catagorie) return res.status(400).json({ msg: "No Catagorie Found" });
     res.status(200).json(catagorie);
   } catch (error) {
@@ -362,7 +367,7 @@ export const getPurchased = async (req, res, next) => {
     if (category) {
       query.status = category;
     }
-console.log(category);
+    console.log(category);
     const orders = await purchasedModel.find(query).skip(skip).limit(limit);
     const userIds = [...new Set(orders.map((order) => order.userId))];
     const users = await userModel.find({ _id: { $in: userIds } }).exec();
@@ -392,11 +397,13 @@ export const ViewPurchased = async (req, res, next) => {
   try {
     const service = await purchasedModel.findById(id);
     if (!service) return res.status(400).json({ msg: "Service Not Found" });
-    const user = await userModel.findOne({_id: service.userId})
+    const user = await userModel.findOne({ _id: service?.userId });
+    const payment = await paymentModel.findOne({ _id: service?.paymentId });
     const allinone = {
       service,
-      user
-    }
+      user,
+      payment,
+    };
     res.status(200).json(allinone);
   } catch (error) {
     next(error);
@@ -405,7 +412,7 @@ export const ViewPurchased = async (req, res, next) => {
 
 export const deletePurchased = async (req, res, next) => {
   try {
-    const ids = req.body.ids
+    const ids = req.body.ids;
     console.log(ids);
     if (!Array.isArray(ids) || ids.length === 0) {
       return res.status(400).json({ msg: "No IDs provided" });
@@ -416,6 +423,28 @@ export const deletePurchased = async (req, res, next) => {
     }
     res.status(200).json({
       msg: "Files deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updatePurchased = async (req, res, next) => {
+  try {
+    const {id} = req.params;
+    const { status } = req.body;
+    console.log(status, id)
+    if (!id) {
+      return res.status(400).json({ msg: "No ID provided" });
+    }
+    const result = await purchasedModel.findByIdAndUpdate(id, {
+      $set: { status: status },
+    });
+    if (!result) {
+      return res.status(404).json({ msg: "No files found to update" });
+    }
+    res.status(200).json({
+      msg: "Files updated successfully",
     });
   } catch (error) {
     next(error);
@@ -449,7 +478,7 @@ export const getCustomers = async (req, res, next) => {
     if (minPrice !== null) {
       query.total_price = { $gte: minPrice };
     }
-console.log(search)
+    console.log(search);
     if (search) {
       query.first_name = { $regex: search, $options: "i" };
     }

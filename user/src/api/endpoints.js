@@ -5,6 +5,7 @@ const api = import.meta.env.VITE_API;
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8000/api",
+  // baseURL: "http://localhost:8000/api",
 });
 
 // Request interceptor to add auth token to headers

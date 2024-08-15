@@ -4,7 +4,7 @@ export const handleError = (error) => {
   if (error.response) {
     // Server responded with a status other than 2xx
     console.error("Server Error:", error);
-    throw { status: error?.response?.status, data: error?.response?.statusText };
+    throw { status: error?.response, data: error?.response?.data };
   } else if (error.request) {
     console.error("Network Error:", error.request);
     throw { status: null, data: "Network Error" };

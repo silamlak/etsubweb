@@ -23,6 +23,7 @@ import {
   getCustomers,
   deleteCustomers,
   ViewCustomer,
+  updatePurchased,
 } from "../controller/adminController.js";
 import {
   addOfferValidator,
@@ -30,8 +31,14 @@ import {
   addCatagorieValidator,
 } from "../validation/adminValidation.js";
 import { getCategorySalesDistribution, getSalesAndRevenue, getTotals, topPendingOrders, topUsers } from "../controller/dashboardController.js";
-import { verifyJWT } from "../middleware/verifyToken.js";
+import { verifyJWT } from "../middleware/adminTokenVerify.js";
+import { admincreateUser, adminrefresh, adminsignIn } from "../controller/adminAuthController.js";
 const router = express.Router()
+
+//auth
+router.post('/auth/signin', adminsignIn)
+router.post('/auth/refresh', adminrefresh)
+router.post('/auth/signup', admincreateUser)
 
 //service
 router.post("/service/add", verifyJWT, addServiceValidator, addService);
@@ -43,6 +50,7 @@ router.get("/service/get", verifyJWT, getService);
 //order
 router.get("/order/get", verifyJWT, getPurchased);
 router.post("/order/delete", verifyJWT, deletePurchased);
+router.post("/order/update/:id", verifyJWT, updatePurchased);
 router.get("/order/get/:id", verifyJWT, ViewPurchased);
 
 //offer

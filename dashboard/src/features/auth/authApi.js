@@ -24,6 +24,8 @@ export const signupApi = async (data) => {
     }
 }
 
+
+//confirmations
 export const confirmApi = async (data) => {
     try {
         const res = await axios.post(endpoints.confirm, data)

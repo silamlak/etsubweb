@@ -27,7 +27,7 @@ export const TotalSkeleton = () => {
 export const TotalError = ({error}) => {
  return (
    <div className="w-full mt-4 p-4 bg-red-100 text-red-600 dark:bg-red-800 dark:text-red-200 rounded-lg shadow-md">
-     <p className='text-sm 2xl:text-md'>{error?.data || "An unexpected error occurred."}</p>
+     <p className='text-sm 2xl:text-md'>{"An unexpected error occurred."}</p>
    </div>
  );
 }
@@ -95,7 +95,7 @@ export const TableError = ({error}) => {
      </div>
      <div className="w-full p-6 text-red-600 dark:text-red-600 rounded-lg">
        <p className="text-sm 2xl:text-md">
-         {error?.data || "An unexpected error occurred."}
+         {"An unexpected error occurred."}
        </p>
      </div>
    </div>
@@ -126,7 +126,7 @@ export const ChartError = ({error}) => {
      <ResponsiveContainer width="100%" height={350}>
        <div className="w-full p-4 text-red-600 dark:text-red-600 rounded-lg">
          <p className="text-sm 2xl:text-md">
-           {error?.data || "An unexpected error occurred."}
+           {"An unexpected error occurred."}
          </p>
        </div>
      </ResponsiveContainer>

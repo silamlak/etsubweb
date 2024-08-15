@@ -126,7 +126,6 @@ export const confirmOtp = async (req, res, next) => {
 };
 
 export const signIn = async (req, res, next) => {
-  // Validate request body
   await body("email")
     .isEmail()
     .withMessage("Please include a valid email")
@@ -149,9 +148,9 @@ export const signIn = async (req, res, next) => {
     if (!user) {
       return res.status(400).json({ msg: "Invalid credentials" });
     }
-    // if (user.confirmed === false) {
-    //   return res.status(400).json({ msg: "consfirmation needed" });
-    // }
+    if (user.confirmed === false) {
+      return res.status(400).json({ msg: "consfirmation needed" });
+    }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
@@ -169,20 +168,20 @@ export const signIn = async (req, res, next) => {
     };
 
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "1m",
+      expiresIn: "10m",
     });
 
         const refreshToken = jwt.sign(
           payload,
           process.env.REFRESH_TOKEN_SECRET,
-          { expiresIn: "1h" }
+          { expiresIn: "7d" }
         );
 
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Set to `true` in production
       sameSite: "Strict", // Optional, adds additional security
-      maxAge: 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.status(200).json({ token });
@@ -203,7 +202,6 @@ export const refresh = async (req, res) => {
   const refreshToken = cookies.jwt;
 
   try {
-    // Verify the refresh token
     const decoded = await new Promise((resolve, reject) => {
       jwt.verify(
         refreshToken,
@@ -220,14 +218,12 @@ export const refresh = async (req, res) => {
 
     console.log("Decoded:", decoded);
 
-    // Find the user based on the decoded token
     const foundUser = await userModel.findById(decoded.user.id).exec();
 
     if (!foundUser) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    // Create a new access token
     const payload = {
       user: {
         id: foundUser._id,
@@ -238,17 +234,14 @@ export const refresh = async (req, res) => {
       },
     };
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "1m",
+      expiresIn: "10m",
     });
 
-    // Send the new access token as a response
     res.json(accessToken);
   } catch (err) {
     if (err.name === "JsonWebTokenError") {
-      // Invalid token
       return res.status(403).json({ message: "Forbidden" });
     }
-    // Internal server error
     console.error("Error during token refresh:", err);
     res.status(500).json({ message: "Internal Server Error" });
   }
