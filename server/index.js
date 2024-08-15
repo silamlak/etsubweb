@@ -18,11 +18,7 @@ import userModel from "./models/userModel.js";
 app.use(cookieParser());
 app.use(
   cors({
-    origin: [
-      // "http://localhost:5173",
-      "https://etsubprinting.onrender.com",
-      "https://adminetsub.onrender.com",
-    ],
+    origin: "https://etsubprinting.onrender.com",
     credentials: true,
   })
 );

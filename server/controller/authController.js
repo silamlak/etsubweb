@@ -192,10 +192,10 @@ export const signIn = async (req, res, next) => {
 
 export const refresh = async (req, res) => {
   const cookies = req.cookies;
-  console.log("Cookies:", cookies);
+  console.log("Cookies:", cookies?.jwt);
 
   if (!cookies?.jwt) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized First" });
   }
 
   const refreshToken = cookies.jwt;
@@ -220,7 +220,7 @@ export const refresh = async (req, res) => {
     const foundUser = await userModel.findById(decoded.user.id).exec();
 
     if (!foundUser) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Unauthorized User" });
     }
 
     const payload = {

@@ -35,7 +35,7 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       try {
         const response = await axios.post(
-          `${api}/auth/refresh`,
+          `https://etsubweb.onrender.com/api/auth/refresh`,
           {},
           {
             withCredentials: true,
