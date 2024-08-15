@@ -243,6 +243,17 @@ const Product = () => {
                       {image.name}
                     </p>
                   </div>
+                  <div className="flex items-center gap-2 p-2 bg-slate-100 dark:bg-slate-700">
+                    <div>
+                      <FaFacebook className="" />
+                    </div>
+                    <div>
+                      <FaInstagramSquare className="" />
+                    </div>
+                    <div>
+                      <FaTiktok className="" />
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

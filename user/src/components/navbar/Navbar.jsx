@@ -2,14 +2,20 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaAngleDown, FaSearch, FaBars, FaTimes } from "react-icons/fa";
+import { IoMdLogOut } from "react-icons/io";
+import { AiOutlineLogin } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import { menuData } from "./megamenu"; // Corrected import path
 import SearchPopup from "./SearchPopup";
 import Switcher from "../Switcher";
-import Logo from '../../assets/logo.png'
+import Logo from "../../assets/logo.png";
+import { logout } from "../../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Navbar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const isAuth = useSelector((state) => state.auth.user);
   const [openMenu, setOpenMenu] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSubMenu, setActiveSubMenu] = useState(null);
@@ -20,7 +26,7 @@ const Navbar = () => {
   const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
 
   const handleMenuClick = (index, m) => {
-    console.log(index, m)
+    console.log(index, m);
     if (activeSubMenu === index) {
       setActiveSubMenu(null);
     } else {
@@ -29,11 +35,14 @@ const Navbar = () => {
   };
 
   const handleNavigate = (id) => {
-    console.log(id)
-    navigate(`${id}`)
-      setActiveSubMenu(null);
-    setMobileMenuOpen(false)
-  }
+    console.log(id);
+    navigate(`${id}`);
+    setActiveSubMenu(null);
+    setMobileMenuOpen(false);
+  };
+  const handleLogin = () => {
+    navigate(`/sign-in`);
+  };
 
   return (
     <div className="sticky z-50 top-8">
@@ -117,9 +126,21 @@ const Navbar = () => {
               className="flex items-center gap-2"
               onClick={() => setSearchPopupOpen(true)}
             >
-              <p>Search</p>
+              <p className="max-sm:hidden">Search</p>
               <FaSearch size={20} />
             </button>
+            {isAuth && (
+              <button className="flex gap-1 items-center">
+                <p className="max-sm:hidden">Logout</p>
+                <IoMdLogOut size={20} onClick={() => dispatch(logout())} />
+              </button>
+            )}
+            {!isAuth && (
+              <button className="flex gap-1 items-center" onClick={handleLogin}>
+                <p className="max-sm:hidden">Login</p>
+                <AiOutlineLogin size={20} />
+              </button>
+            )}
           </div>
 
           {/* Mobile Menu Button */}

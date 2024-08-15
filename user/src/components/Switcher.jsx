@@ -16,7 +16,7 @@ export default function Switcher() {
   return (
     <>
       <div className="flex gap-2  text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white items-center">
-        <p className="mb-1">Mode</p>
+        <p className="mb-1 max-sm:hidden">Mode</p>
         <Switch
           onChange={toggleDarkMode}
           checked={darkSide}
