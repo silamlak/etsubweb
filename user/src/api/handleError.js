@@ -10,7 +10,7 @@ export const handleError = (error) => {
     throw { status: null, data: "Network Error" };
   } else {
     // Something happened while setting up the request
-    toast.error(error?.message);
+    // toast.error(error?.message);
     console.error("Error:", error.message);
     throw { status: null, data: error.message };
   }
