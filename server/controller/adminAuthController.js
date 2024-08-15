@@ -50,11 +50,11 @@ export const adminsignIn = async (req, res, next) => {
 
     // Generate the JWT tokens
     const token = jwt.sign(payload, process.env.JWT_SECRET, {
-      expiresIn: "10m",
+      expiresIn: "1m",
     });
 
     const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-      expiresIn: "1d",
+      expiresIn: "1h",
     });
 
     // Set the refresh token as a cookie
@@ -62,7 +62,7 @@ export const adminsignIn = async (req, res, next) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Set to `true` in production
       sameSite: "Strict", // Optional, adds additional security
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 60 * 60 * 1000,
     });
 
     // Respond with the access token
@@ -113,7 +113,7 @@ export const adminrefresh = async (req, res) => {
       },
     };
     const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-      expiresIn: "10m",
+      expiresIn: "1m",
     });
 
     res.json(accessToken);

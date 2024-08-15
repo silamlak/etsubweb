@@ -16,9 +16,23 @@ import adminRoute from './route/adminRoute.js'
 import userModel from "./models/userModel.js";
 
 app.use(cookieParser());
+
+const allowedOrigins = [
+  "https://etsubprinting.onrender.com",
+  "https://adminet.onrender.com",
+];
+
+// CORS configuration
 app.use(
   cors({
-    origin: "https://etsubprinting.onrender.com",
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+        // Allow requests from the allowed origins or requests with no origin
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
