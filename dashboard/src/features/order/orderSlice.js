@@ -22,13 +22,15 @@ export const orderSlice = createSlice({
     addDetail: (state, action) => {
       state.dataDetail = action.payload;
     },
-    updateDetailStatus: (state, action) => {
-      console.log(action.payload)
-      state.dataDetail.service = {
-        ...state.dataDetail.service,
-        status:action.payload
-      };
-    },
+updateDetailStatus: (state, action) => {
+  console.log(action.payload);
+  if (state.dataDetail && state.dataDetail.service) {
+    state.dataDetail.service = {
+      ...state.dataDetail.service,
+      status: action.payload,
+    };
+  } else {}
+},
 
     addOrderDetail: (state, action) => {
       state.currentDataId = action.payload;

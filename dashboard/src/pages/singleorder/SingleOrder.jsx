@@ -30,7 +30,7 @@ const SingleOrder = () => {
   const { id } = useParams();
   const [stat, setStat] = useState('')
   const { data:cData, isLoading, isError, error } = useQuery({
-    queryKey: ["singleOrder", id, stat],
+    queryKey: ["singleOrder", id],
     queryFn: () => getSingleOrderFun(id),
     enabled: !!id,
   });
@@ -65,6 +65,7 @@ const SingleOrder = () => {
     mutationFn: postUpdateStatusFun,
     onSuccess: (data) => {
       toast.success(data?.msg)
+      // window.location.reload();
       dispatch(updateDetailStatus(stat));
     },
     onError: (err) => {

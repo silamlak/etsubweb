@@ -20,6 +20,7 @@ app.use(cookieParser());
 const allowedOrigins = [
   "https://etsubprinting.onrender.com",
   "https://adminet.onrender.com",
+  "http://localhost:5173",
 ];
 
 // CORS configuration
