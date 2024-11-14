@@ -11,7 +11,7 @@ import cron from "node-cron";
 
 import authRoute from "./route/authRoute.js";
 import userRoute from './route/userRoute.js'
-import adminRoute from './route/adminRoute.js'
+import adminRoute from './route/adminRoute.js';
 
 import userModel from "./models/userModel.js";
 
